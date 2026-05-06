@@ -1,0 +1,104 @@
+name: Premium Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  # 1. Tahap Build & Check
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Build Frontend
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
+
+      - name: Check Backend Syntax
+        run: |
+          cd backend
+          python3 -m pip install --upgrade pip
+          pip install flake8
+          # Cek syntax error saja tanpa menjalankan app
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      # Simpan hasil build frontend agar bisa dipakai di job deploy
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+
+  # 2. Tahap Deploy ke VPS
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist/
+
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            # Masuk ke direktori proyek
+            cd ${{ secrets.TARGET_DIR }}
+            
+            # 1. Update Backend Code & Dependencies
+            git pull origin main
+            cd backend
+            if [ ! -d "venv" ]; then python3 -m venv venv; fi
+            source venv/bin/activate
+            pip install -r requirements.txt
+            
+            # Restart Backend (Direkomendasikan pakai PM2 atau Systemd)
+            # pm2 restart fuzzy-backend || pm2 start main.py --name fuzzy-backend --interpreter ./venv/bin/python
+            
+            # 2. Update Frontend (Hapus dist lama, ganti yang baru dari GitHub Action)
+            cd ..
+            rm -rf frontend/dist_new
+            mkdir -p frontend/dist_new
+            
+      - name: Copy Frontend Build to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          source: "dist/*"
+          target: "${{ secrets.TARGET_DIR }}/frontend/dist_new"
+          strip_components: 1
+
+      - name: Finalize Deployment on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd ${{ secrets.TARGET_DIR }}/frontend
+            # Swap dist lama dengan yang baru secara instan
+            rm -rf dist_old
+            mv dist dist_old || true
+            mv dist_new dist
+            echo "Deployment Completed Successfully!"

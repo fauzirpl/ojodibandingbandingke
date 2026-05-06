@@ -1,0 +1,595 @@
+﻿no,kategori,singkatan_atau_variasi,ekspansi_standar,regex_pattern
+1,A. Jabatan & Kepegawaian,pns,pegawai negeri sipil,\bpns\b
+2,A. Jabatan & Kepegawaian,asn,aparatur sipil negara,\basn\b
+3,A. Jabatan & Kepegawaian,aparatur sipil negara,pegawai negeri sipil,\baparatur sipil negara\b
+4,A. Jabatan & Kepegawaian,pppk,pegawai pemerintah dengan perjanjian kerja,\bpppk\b
+5,A. Jabatan & Kepegawaian,p3k,pegawai pemerintah dengan perjanjian kerja,\bp3k\b
+6,A. Jabatan & Kepegawaian,phl,pegawai harian lepas,\bphl\b
+7,A. Jabatan & Kepegawaian,ptt,pegawai tidak tetap,\bptt\b
+8,A. Jabatan & Kepegawaian,tenaga ahli,ahli,\btenaga ahli\b
+9,A. Jabatan & Kepegawaian,ta,tenaga ahli,\bta\b
+10,A. Jabatan & Kepegawaian,ts,tenaga sub profesional,\bts\b
+11,A. Jabatan & Kepegawaian,kso,kerja sama operasi,\bkso\b
+12,A. Jabatan & Kepegawaian,pjt,perum jasa tirta,\bpjt\b
+13,A. Jabatan & Kepegawaian,ppk,pejabat pembuat komitmen,\bppk\b
+14,A. Jabatan & Kepegawaian,pok,pejabat operasional kegiatan,\bpok\b
+15,A. Jabatan & Kepegawaian,pokja,kelompok kerja,\bpokja\b
+16,A. Jabatan & Kepegawaian,pkk,pengelola keuangan kegiatan,\bpkk\b
+17,A. Jabatan & Kepegawaian,kpa,kuasa pengguna anggaran,\bkpa\b
+18,A. Jabatan & Kepegawaian,pa,pengguna anggaran,\bpa\b
+19,A. Jabatan & Kepegawaian,pptk,pejabat pelaksana teknis kegiatan,\bpptk\b
+20,A. Jabatan & Kepegawaian,pbj,pengadaan barang jasa,\bpbj\b
+21,A. Jabatan & Kepegawaian,ukpbj,unit kerja pengadaan barang jasa,\bukpbj\b
+22,A. Jabatan & Kepegawaian,lpse,layanan pengadaan secara elektronik,\blpse\b
+23,A. Jabatan & Kepegawaian,pengws,pengawas,\bpengws\b
+24,A. Jabatan & Kepegawaian,pgw,pengawas,\bpgw\b
+25,A. Jabatan & Kepegawaian,pelaks,pelaksana,\bpelaks\b
+26,A. Jabatan & Kepegawaian,plks,pelaksana,\bplks\b
+27,A. Jabatan & Kepegawaian,koord,koordinator,\bkoord\b
+28,A. Jabatan & Kepegawaian,koordinator lapangan,koordinator lapangan,\bkoordinator lapangan\b
+29,A. Jabatan & Kepegawaian,korlap,koordinator lapangan,\bkorlap\b
+30,A. Jabatan & Kepegawaian,super,supervisor,\bsuper\b
+31,A. Jabatan & Kepegawaian,superv,supervisor,\bsuperv\b
+32,A. Jabatan & Kepegawaian,mdr,mandor,\bmdr\b
+33,A. Jabatan & Kepegawaian,kpl,kepala,\bkpl\b
+34,A. Jabatan & Kepegawaian,kabid,kepala bidang,\bkabid\b
+35,A. Jabatan & Kepegawaian,kasi,kepala seksi,\bkasi\b
+36,A. Jabatan & Kepegawaian,kasubid,kepala sub bidang,\bkasubid\b
+37,A. Jabatan & Kepegawaian,kasubag,kepala sub bagian,\bkasubag\b
+38,A. Jabatan & Kepegawaian,kasat,kepala satuan,\bkasat\b
+39,A. Jabatan & Kepegawaian,kasatker,kepala satuan kerja,\bkasatker\b
+40,A. Jabatan & Kepegawaian,satker,satuan kerja,\bsatker\b
+41,A. Jabatan & Kepegawaian,snvt,satuan non vertikal tertentu,\bsnvt\b
+42,A. Jabatan & Kepegawaian,balai,balai,\bbalai\b
+43,A. Jabatan & Kepegawaian,bbws,balai besar wilayah sungai,\bbbws\b
+44,A. Jabatan & Kepegawaian,bws,balai wilayah sungai,\bbws\b
+45,A. Jabatan & Kepegawaian,bbjn,balai besar jalan nasional,\bbbjn\b
+46,A. Jabatan & Kepegawaian,bjn,balai jalan nasional,\bbjn\b
+47,A. Jabatan & Kepegawaian,bjt,balai jembatan dan terowongan,\bbjt\b
+48,A. Jabatan & Kepegawaian,btsk,balai teknik sungai dan danau,\bbtsk\b
+49,A. Jabatan & Kepegawaian,btam,balai teknik air minum,\bbtam\b
+50,A. Jabatan & Kepegawaian,staf,staf,\bstaf\b
+51,A. Jabatan & Kepegawaian,staf ahli,ahli,\bstaf ahli\b
+52,A. Jabatan & Kepegawaian,fungsional,pejabat fungsional,\bfungsional\b
+53,A. Jabatan & Kepegawaian,jft,jabatan fungsional tertentu,\bjft\b
+54,A. Jabatan & Kepegawaian,jfu,jabatan fungsional umum,\bjfu\b
+55,A. Jabatan & Kepegawaian,jpt,jabatan pimpinan tinggi,\bjpt\b
+56,A. Jabatan & Kepegawaian,jptm,jabatan pimpinan tinggi madya,\bjptm\b
+57,A. Jabatan & Kepegawaian,jptap,jabatan pimpinan tinggi administrasi pratama,\bjptap\b
+58,A. Jabatan & Kepegawaian,adm,administrasi,\badm\b
+59,A. Jabatan & Kepegawaian,administrator,administrator,\badministrator\b
+60,A. Jabatan & Kepegawaian,op,operasi dan pemeliharaan,\bop\b
+61,B. Kelembagaan & Unit Organisasi,pupr,pekerjaan umum dan perumahan rakyat,\bpupr\b
+62,B. Kelembagaan & Unit Organisasi,pu,pekerjaan umum,\bpu\b
+63,B. Kelembagaan & Unit Organisasi,kemen pupr,kementerian pekerjaan umum dan perumahan rakyat,\bkemen pupr\b
+64,B. Kelembagaan & Unit Organisasi,kemenpu,kementerian pekerjaan umum,\bkemenpu\b
+65,B. Kelembagaan & Unit Organisasi,dinas pupr,dinas pekerjaan umum dan perumahan rakyat,\bdinas pupr\b
+66,B. Kelembagaan & Unit Organisasi,dinas pu,dinas pekerjaan umum,\bdinas pu\b
+67,B. Kelembagaan & Unit Organisasi,ditjen sda,direktorat jenderal sumber daya air,\bditjen sda\b
+68,B. Kelembagaan & Unit Organisasi,ditjen bm,direktorat jenderal bina marga,\bditjen bm\b
+69,B. Kelembagaan & Unit Organisasi,ditjen ck,direktorat jenderal cipta karya,\bditjen ck\b
+70,B. Kelembagaan & Unit Organisasi,ditjen pp,direktorat jenderal perumahan,\bditjen pp\b
+71,B. Kelembagaan & Unit Organisasi,ditjen bk,direktorat jenderal bina konstruksi,\bditjen bk\b
+72,B. Kelembagaan & Unit Organisasi,ditjen taru,direktorat jenderal tata ruang,\bditjen taru\b
+73,B. Kelembagaan & Unit Organisasi,ditjen,direktorat jenderal,\bditjen\b
+74,B. Kelembagaan & Unit Organisasi,ditjend,direktorat jenderal,\bditjend\b
+75,B. Kelembagaan & Unit Organisasi,dit,direktorat,\bdit\b
+76,B. Kelembagaan & Unit Organisasi,direktur,direktur,\bdirektur\b
+77,B. Kelembagaan & Unit Organisasi,dirjend,direktur jenderal,\bdirjend\b
+78,B. Kelembagaan & Unit Organisasi,dirjen,direktur jenderal,\bdirjen\b
+79,B. Kelembagaan & Unit Organisasi,bina marga,bina marga,\bbina marga\b
+80,B. Kelembagaan & Unit Organisasi,cipta karya,cipta karya,\bcipta karya\b
+81,B. Kelembagaan & Unit Organisasi,ck,cipta karya,\bck\b
+82,B. Kelembagaan & Unit Organisasi,bm,bina marga,\bbm\b
+83,B. Kelembagaan & Unit Organisasi,sda,sumber daya air,\bsda\b
+84,B. Kelembagaan & Unit Organisasi,perumahan rakyat,perumahan rakyat,\bperumahan rakyat\b
+85,B. Kelembagaan & Unit Organisasi,pera,perumahan rakyat,\bpera\b
+86,B. Kelembagaan & Unit Organisasi,bina konstruksi,bina konstruksi,\bbina konstruksi\b
+87,B. Kelembagaan & Unit Organisasi,bkon,bina konstruksi,\bbkon\b
+88,B. Kelembagaan & Unit Organisasi,taru,tata ruang,\btaru\b
+89,B. Kelembagaan & Unit Organisasi,pkp,pengembangan kawasan permukiman,\bpkp\b
+90,B. Kelembagaan & Unit Organisasi,pip,pengembangan infrastruktur permukiman,\bpip\b
+91,B. Kelembagaan & Unit Organisasi,pspam,pengembangan sistem penyediaan air minum,\bpspam\b
+92,B. Kelembagaan & Unit Organisasi,ppsp,percepatan pembangunan sanitasi permukiman,\bppsp\b
+93,B. Kelembagaan & Unit Organisasi,psda,pengelolaan sumber daya air,\bpsda\b
+94,C. Sumber Daya Air,irigasi,irigasi,\birigasi\b
+95,C. Sumber Daya Air,irg,irigasi,\birg\b
+96,C. Sumber Daya Air,waduk,waduk,\bwaduk\b
+97,C. Sumber Daya Air,bendungan,bendungan,\bbendungan\b
+98,C. Sumber Daya Air,bendung,bendung,\bbendung\b
+99,C. Sumber Daya Air,embung,embung,\bembung\b
+100,C. Sumber Daya Air,situ,situ,\bsitu\b
+101,C. Sumber Daya Air,danau,danau,\bdanau\b
+102,C. Sumber Daya Air,sungai,sungai,\bsungai\b
+103,C. Sumber Daya Air,sgn,sungai,\bsgn\b
+104,C. Sumber Daya Air,saluran,saluran,\bsaluran\b
+105,C. Sumber Daya Air,sal,saluran,\bsal\b
+106,C. Sumber Daya Air,saluran primer,saluran primer,\bsaluran primer\b
+107,C. Sumber Daya Air,saluran sekunder,saluran sekunder,\bsaluran sekunder\b
+108,C. Sumber Daya Air,saluran tersier,saluran tersier,\bsaluran tersier\b
+109,C. Sumber Daya Air,sal primer,saluran primer,\bsal primer\b
+110,C. Sumber Daya Air,sal sekunder,saluran sekunder,\bsal sekunder\b
+111,C. Sumber Daya Air,sal tersier,saluran tersier,\bsal tersier\b
+112,C. Sumber Daya Air,drainase,drainase,\bdrainase\b
+113,C. Sumber Daya Air,drn,drainase,\bdrn\b
+114,C. Sumber Daya Air,tanggul,tanggul,\btanggul\b
+115,C. Sumber Daya Air,tgl,tanggul,\btgl\b
+116,C. Sumber Daya Air,normalisasi sungai,normalisasi sungai,\bnormalisasi sungai\b
+117,C. Sumber Daya Air,rawa,rawa,\brawa\b
+118,C. Sumber Daya Air,pantai,pantai,\bpantai\b
+119,C. Sumber Daya Air,pengaman pantai,pengaman pantai,\bpengaman pantai\b
+120,C. Sumber Daya Air,breakwater,pemecah gelombang,\bbreakwater\b
+121,C. Sumber Daya Air,pemecah gelombang,pemecah gelombang,\bpemecah gelombang\b
+122,C. Sumber Daya Air,pengendali banjir,pengendali banjir,\bpengendali banjir\b
+123,C. Sumber Daya Air,pb,pengendali banjir,\bpb\b
+124,C. Sumber Daya Air,flood control,pengendali banjir,\bflood control\b
+125,C. Sumber Daya Air,op irigasi,operasi pemeliharaan irigasi,\bop irigasi\b
+126,C. Sumber Daya Air,o p,operasi pemeliharaan,\bo p\b
+127,C. Sumber Daya Air,gp3a,gabungan perkumpulan petani pemakai air,\bgp3a\b
+128,C. Sumber Daya Air,p3a,perkumpulan petani pemakai air,\bp3a\b
+129,C. Sumber Daya Air,wua,water user association,\bwua\b
+130,C. Sumber Daya Air,petani pemakai air,perkumpulan petani pemakai air,\bpetani pemakai air\b
+131,C. Sumber Daya Air,daerah irigasi,daerah irigasi,\bdaerah irigasi\b
+132,C. Sumber Daya Air,di,daerah irigasi,\bdi\b
+133,C. Sumber Daya Air,das,daerah aliran sungai,\bdas\b
+134,C. Sumber Daya Air,daerah aliran sungai,daerah aliran sungai,\bdaerah aliran sungai\b
+135,C. Sumber Daya Air,wilayah sungai,wilayah sungai,\bwilayah sungai\b
+136,C. Sumber Daya Air,ws,wilayah sungai,\bws\b
+137,C. Sumber Daya Air,hidrolik,hidrolika,\bhidrolik\b
+138,C. Sumber Daya Air,hidrologi,hidrologi,\bhidrologi\b
+139,C. Sumber Daya Air,hidro,hidrologi,\bhidro\b
+140,C. Sumber Daya Air,debit,debit air,\bdebit\b
+141,C. Sumber Daya Air,sedimen,sedimentasi,\bsedimen\b
+142,C. Sumber Daya Air,plta,pembangkit listrik tenaga air,\bplta\b
+143,C. Sumber Daya Air,pltmh,pembangkit listrik tenaga mikro hidro,\bpltmh\b
+144,C. Sumber Daya Air,plt,pembangkit listrik tenaga,\bplt\b
+145,C. Sumber Daya Air,iuran irigasi,iuran irigasi,\biuran irigasi\b
+146,C. Sumber Daya Air,air baku,air baku,\bair baku\b
+147,C. Sumber Daya Air,intake,bangunan pengambilan air,\bintake\b
+148,C. Sumber Daya Air,bangunan bagi,bangunan bagi,\bbangunan bagi\b
+149,C. Sumber Daya Air,bangunan sadap,bangunan sadap,\bbangunan sadap\b
+150,C. Sumber Daya Air,bangunan ukur,bangunan ukur,\bbangunan ukur\b
+151,C. Sumber Daya Air,pintu air,pintu air,\bpintu air\b
+152,C. Sumber Daya Air,sluis,pintu air,\bsluis\b
+153,C. Sumber Daya Air,pompa irigasi,pompa irigasi,\bpompa irigasi\b
+154,C. Sumber Daya Air,stasiun pompa,stasiun pompa,\bstasiun pompa\b
+155,C. Sumber Daya Air,galian,galian,\bgalian\b
+156,C. Sumber Daya Air,timbunan,timbunan,\btimbunan\b
+157,C. Sumber Daya Air,grouting,grouting,\bgrouting\b
+158,C. Sumber Daya Air,geoteknik,geoteknik,\bgeoteknik\b
+159,C. Sumber Daya Air,geotekstil,geotekstil,\bgeotekstil\b
+160,C. Sumber Daya Air,riprap,pasangan batu,\briprap\b
+161,C. Sumber Daya Air,pasangan batu,pasangan batu,\bpasangan batu\b
+162,C. Sumber Daya Air,beton,beton,\bbeton\b
+163,C. Sumber Daya Air,ferrocement,ferrocement,\bferrocement\b
+164,C. Sumber Daya Air,instrumentasi,instrumentasi bendungan,\binstrumentasi\b
+165,C. Sumber Daya Air,telemeteri,telemeteri,\btelemeteri\b
+166,C. Sumber Daya Air,sistem informasi hidrologi,sistem informasi hidrologi,\bsistem informasi hidrologi\b
+167,C. Sumber Daya Air,sih,sistem informasi hidrologi,\bsih\b
+168,C. Sumber Daya Air,awlr,automatic water level recorder,\bawlr\b
+169,C. Sumber Daya Air,pos hujan,pos pengamatan hujan,\bpos hujan\b
+170,C. Sumber Daya Air,pos duga air,pos pengamatan muka air,\bpos duga air\b
+171,C. Sumber Daya Air,skema jaringan irigasi,skema jaringan irigasi,\bskema jaringan irigasi\b
+172,D. Bina Marga,jln,jalan,\bjln\b
+173,D. Bina Marga,jl,jalan,\bjl\b
+174,D. Bina Marga,jalan nasional,jalan nasional,\bjalan nasional\b
+175,D. Bina Marga,jalan provinsi,jalan provinsi,\bjalan provinsi\b
+176,D. Bina Marga,jalan kabupaten,jalan kabupaten,\bjalan kabupaten\b
+177,D. Bina Marga,jalan desa,jalan desa,\bjalan desa\b
+178,D. Bina Marga,jalan tol,jalan tol,\bjalan tol\b
+179,D. Bina Marga,tol,jalan tol,\btol\b
+180,D. Bina Marga,jaringan jalan,jaringan jalan,\bjaringan jalan\b
+181,D. Bina Marga,perkerasan,perkerasan jalan,\bperkerasan\b
+182,D. Bina Marga,perkerasan lentur,perkerasan lentur,\bperkerasan lentur\b
+183,D. Bina Marga,perkerasan kaku,perkerasan kaku,\bperkerasan kaku\b
+184,D. Bina Marga,aspal,aspal,\baspal\b
+185,D. Bina Marga,hotmix,aspal hotmix,\bhotmix\b
+186,D. Bina Marga,ac bc,asphalt concrete binder course,\bac bc\b
+187,D. Bina Marga,ac wc,asphalt concrete wearing course,\bac wc\b
+188,D. Bina Marga,ac base,asphalt concrete base,\bac base\b
+189,D. Bina Marga,atb,asphalt treated base,\batb\b
+190,D. Bina Marga,ctb,cement treated base,\bctb\b
+191,D. Bina Marga,lpa,lapis pondasi agregat,\blpa\b
+192,D. Bina Marga,lpb,lapis pondasi bawah,\blpb\b
+193,D. Bina Marga,lpt,lapis pondasi tanah,\blpt\b
+194,D. Bina Marga,beton semen,beton semen portland,\bbeton semen\b
+195,D. Bina Marga,pcc,portland cement concrete,\bpcc\b
+196,D. Bina Marga,rtj,rumija,\brtj\b
+197,D. Bina Marga,rumija,ruang milik jalan,\brumija\b
+198,D. Bina Marga,ruwasja,ruang wasja jalan,\bruwasja\b
+199,D. Bina Marga,rencana umum jaringan jalan,rencana umum jaringan jalan,\brencana umum jaringan jalan\b
+200,D. Bina Marga,rujj,rencana umum jaringan jalan,\brujj\b
+201,D. Bina Marga,pemeliharaan rutin,pemeliharaan rutin jalan,\bpemeliharaan rutin\b
+202,D. Bina Marga,pemeliharaan berkala,pemeliharaan berkala jalan,\bpemeliharaan berkala\b
+203,D. Bina Marga,rehabilitasi jalan,rehabilitasi jalan,\brehabilitasi jalan\b
+204,D. Bina Marga,rekonstruksi jalan,rekonstruksi jalan,\brekonstruksi jalan\b
+205,D. Bina Marga,peningkatan jalan,peningkatan jalan,\bpeningkatan jalan\b
+206,D. Bina Marga,pelebaran jalan,pelebaran jalan,\bpelebaran jalan\b
+207,D. Bina Marga,pembangunan jalan baru,pembangunan jalan baru,\bpembangunan jalan baru\b
+208,D. Bina Marga,simpang,persimpangan jalan,\bsimpang\b
+209,D. Bina Marga,underpass,terowongan bawah tanah,\bunderpass\b
+210,D. Bina Marga,overpass,jembatan layang,\boverpass\b
+211,D. Bina Marga,flyover,jembatan layang,\bflyover\b
+212,D. Bina Marga,terowongan,terowongan,\bterowongan\b
+213,D. Bina Marga,trotoar,trotoar,\btrotoar\b
+214,D. Bina Marga,bahu jalan,bahu jalan,\bbahu jalan\b
+215,D. Bina Marga,median,median jalan,\bmedian\b
+216,D. Bina Marga,guardrail,pagar pengaman jalan,\bguardrail\b
+217,D. Bina Marga,rambu,rambu lalu lintas,\brambu\b
+218,D. Bina Marga,marka,marka jalan,\bmarka\b
+219,D. Bina Marga,ppj,penerangan jalan umum,\bppj\b
+220,D. Bina Marga,pju,penerangan jalan umum,\bpju\b
+221,D. Bina Marga,jmb,jembatan,\bjmb\b
+222,D. Bina Marga,jbt,jembatan,\bjbt\b
+223,D. Bina Marga,jembatan,jembatan,\bjembatan\b
+224,D. Bina Marga,gelagar,gelagar jembatan,\bgelagar\b
+225,D. Bina Marga,pier,pilar jembatan,\bpier\b
+226,D. Bina Marga,abutmen,abutmen jembatan,\babutmen\b
+227,D. Bina Marga,bentang,bentang jembatan,\bbentang\b
+228,D. Bina Marga,pondasi tiang,pondasi tiang pancang,\bpondasi tiang\b
+229,D. Bina Marga,pondasi bore,pondasi bored pile,\bpondasi bore\b
+230,D. Bina Marga,bored pile,pondasi bored pile,\bbored pile\b
+231,D. Bina Marga,tiang pancang,tiang pancang,\btiang pancang\b
+232,D. Bina Marga,precast,beton pracetak,\bprecast\b
+233,D. Bina Marga,prategang,beton prategang,\bprategang\b
+234,D. Bina Marga,prestressed,beton prategang,\bprestressed\b
+235,D. Bina Marga,pci,prestressed concrete i girder,\bpci\b
+236,D. Bina Marga,wf,wide flange baja,\bwf\b
+237,D. Bina Marga,hss,hollow structural section baja,\bhss\b
+238,D. Bina Marga,baja,baja,\bbaja\b
+239,D. Bina Marga,kabel,kabel jembatan,\bkabel\b
+240,D. Bina Marga,suspension bridge,jembatan gantung,\bsuspension bridge\b
+241,D. Bina Marga,cable stayed,jembatan cable stayed,\bcable stayed\b
+242,D. Bina Marga,gantung,jembatan gantung,\bgantung\b
+243,D. Bina Marga,bk3jn,balai konstruksi jalan dan jembatan nasional,\bbk3jn\b
+244,D. Bina Marga,pms,pavement management system,\bpms\b
+245,D. Bina Marga,bms,bridge management system,\bbms\b
+246,D. Bina Marga,iri,international roughness index,\biri\b
+247,D. Bina Marga,sdpjn,sistem database penanganan jalan nasional,\bsdpjn\b
+248,D. Bina Marga,srp,standar rencana perkerasan,\bsrp\b
+249,D. Bina Marga,golongan jalan,golongan jalan,\bgolongan jalan\b
+250,D. Bina Marga,fungsi jalan,fungsi jalan,\bfungsi jalan\b
+251,D. Bina Marga,kelas jalan,kelas jalan,\bkelas jalan\b
+252,D. Bina Marga,arkterisasi,karakterisasi jalan,\barkterisasi\b
+253,E. Cipta Karya,ipal,instalasi pengolahan air limbah,\bipal\b
+254,E. Cipta Karya,instpal,instalasi pengolahan air limbah,\binstpal\b
+255,E. Cipta Karya,ipam,instalasi pengolahan air minum,\bipam\b
+256,E. Cipta Karya,instpam,instalasi pengolahan air minum,\binstpam\b
+257,E. Cipta Karya,ipa,instalasi pengolahan air,\bipa\b
+258,E. Cipta Karya,pdam,perusahaan daerah air minum,\bpdam\b
+259,E. Cipta Karya,bumdes,badan usaha milik desa,\bbumdes\b
+260,E. Cipta Karya,bumd,badan usaha milik daerah,\bbumd\b
+261,E. Cipta Karya,spam,sistem penyediaan air minum,\bspam\b
+262,E. Cipta Karya,jdih,jaringan dokumentasi informasi hukum,\bjdih\b
+263,E. Cipta Karya,nam,non air minum,\bnam\b
+264,E. Cipta Karya,samb,sambungan rumah air minum,\bsamb\b
+265,E. Cipta Karya,sr,sambungan rumah,\bsr\b
+266,E. Cipta Karya,hydrant,hidran umum,\bhydrant\b
+267,E. Cipta Karya,hu,hidran umum,\bhu\b
+268,E. Cipta Karya,tap,terminal air,\btap\b
+269,E. Cipta Karya,reservoir,reservoir air,\breservoir\b
+270,E. Cipta Karya,bak penampung,bak penampungan air,\bbak penampung\b
+271,E. Cipta Karya,tower air,menara air,\btower air\b
+272,E. Cipta Karya,wtp,water treatment plant,\bwtp\b
+273,E. Cipta Karya,pompa air,pompa air,\bpompa air\b
+274,E. Cipta Karya,pipa transmisi,pipa transmisi air,\bpipa transmisi\b
+275,E. Cipta Karya,pipa distribusi,pipa distribusi air,\bpipa distribusi\b
+276,E. Cipta Karya,pipa hdpe,pipa hdpe,\bpipa hdpe\b
+277,E. Cipta Karya,hdpe,pipa high density polyethylene,\bhdpe\b
+278,E. Cipta Karya,pvc,pipa polyvinyl chloride,\bpvc\b
+279,E. Cipta Karya,gip,pipa baja galvanis,\bgip\b
+280,E. Cipta Karya,di pipe,pipa besi tuang,\bdi pipe\b
+281,E. Cipta Karya,sanitasi,sanitasi,\bsanitasi\b
+282,E. Cipta Karya,air limbah,air limbah,\bair limbah\b
+283,E. Cipta Karya,limbah domestik,limbah domestik,\blimbah domestik\b
+284,E. Cipta Karya,septik tank,tangki septik,\bseptik tank\b
+285,E. Cipta Karya,tangki septik,tangki septik,\btangki septik\b
+286,E. Cipta Karya,septiktank,tangki septik,\bseptiktank\b
+287,E. Cipta Karya,ipal komunal,instalasi pengolahan air limbah komunal,\bipal komunal\b
+288,E. Cipta Karya,spal,sistem pengelolaan air limbah,\bspal\b
+289,E. Cipta Karya,sampah,pengelolaan sampah,\bsampah\b
+290,E. Cipta Karya,tpa,tempat pembuangan akhir,\btpa\b
+291,E. Cipta Karya,tpst,tempat pengolahan sampah terpadu,\btpst\b
+292,E. Cipta Karya,bank sampah,bank sampah,\bbank sampah\b
+293,E. Cipta Karya,3r,reduce reuse recycle,\b3r\b
+294,E. Cipta Karya,reuse,reduce reuse recycle,\breuse\b
+295,E. Cipta Karya,recycle,reduce reuse recycle,\brecycle\b
+296,E. Cipta Karya,kotoran,limbah,\bkotoran\b
+297,E. Cipta Karya,permukiman,permukiman,\bpermukiman\b
+298,E. Cipta Karya,kawasan kumuh,kawasan kumuh,\bkawasan kumuh\b
+299,E. Cipta Karya,slum,kawasan kumuh,\bslum\b
+300,E. Cipta Karya,kotaku,kota tanpa kumuh,\bkotaku\b
+301,E. Cipta Karya,rtlh,rumah tidak layak huni,\brtlh\b
+302,E. Cipta Karya,rumah kumuh,rumah tidak layak huni,\brumah kumuh\b
+303,E. Cipta Karya,bedah rumah,rehabilitasi rumah tidak layak huni,\bbedah rumah\b
+304,E. Cipta Karya,rusun,rumah susun,\brusun\b
+305,E. Cipta Karya,rushun,rumah susun,\brushun\b
+306,E. Cipta Karya,rsawa,rumah susun sewa,\brsawa\b
+307,E. Cipta Karya,rsami,rumah susun milik,\brsami\b
+308,E. Cipta Karya,gedung,bangunan gedung,\bgedung\b
+309,E. Cipta Karya,gedung negara,bangunan gedung negara,\bgedung negara\b
+310,E. Cipta Karya,imb,izin mendirikan bangunan,\bimb\b
+311,E. Cipta Karya,pbg,persetujuan bangunan gedung,\bpbg\b
+312,E. Cipta Karya,slo,sertifikat laik operasi,\bslo\b
+313,E. Cipta Karya,slf,sertifikat laik fungsi,\bslf\b
+314,E. Cipta Karya,bangunan tahan gempa,bangunan tahan gempa,\bbangunan tahan gempa\b
+315,E. Cipta Karya,btg,bangunan tahan gempa,\bbtg\b
+316,E. Cipta Karya,struktur bangunan,struktur bangunan,\bstruktur bangunan\b
+317,E. Cipta Karya,pondasi,pondasi bangunan,\bpondasi\b
+318,E. Cipta Karya,kolom,kolom bangunan,\bkolom\b
+319,E. Cipta Karya,balok,balok bangunan,\bbalok\b
+320,E. Cipta Karya,plat lantai,pelat lantai,\bplat lantai\b
+321,E. Cipta Karya,atap,atap bangunan,\batap\b
+322,E. Cipta Karya,mek,mekanikal,\bmek\b
+323,E. Cipta Karya,elk,elektrikal,\belk\b
+324,E. Cipta Karya,me,mekanikal elektrikal,\bme\b
+325,E. Cipta Karya,mek el,mekanikal elektrikal,\bmek el\b
+326,E. Cipta Karya,mep,mekanikal elektrikal plumbing,\bmep\b
+327,E. Cipta Karya,plumbing,plambing,\bplumbing\b
+328,E. Cipta Karya,plambing,plambing,\bplambing\b
+329,E. Cipta Karya,hvac,heating ventilation air conditioning,\bhvac\b
+330,E. Cipta Karya,ac,air conditioning,\bac\b
+331,E. Cipta Karya,kvd,keandalan dan keselamatan bangunan,\bkvd\b
+332,E. Cipta Karya,proteksi kebakaran,sistem proteksi kebakaran,\bproteksi kebakaran\b
+333,E. Cipta Karya,hydrant kebakaran,hidran kebakaran,\bhydrant kebakaran\b
+334,E. Cipta Karya,satpam,satuan pengamanan,\bsatpam\b
+335,E. Cipta Karya,bms bangunan,building management system,\bbms bangunan\b
+336,E. Cipta Karya,smart building,bangunan cerdas,\bsmart building\b
+337,E. Cipta Karya,smart city,kota cerdas,\bsmart city\b
+338,E. Cipta Karya,gis,sistem informasi geografis,\bgis\b
+339,E. Cipta Karya,sig,sistem informasi geografis,\bsig\b
+340,E. Cipta Karya,bim,building information modeling,\bbim\b
+341,E. Cipta Karya,cad,computer aided design,\bcad\b
+342,E. Cipta Karya,autocad,computer aided design,\bautocad\b
+343,E. Cipta Karya,sketchup,desain 3d sketchup,\bsketchup\b
+344,E. Cipta Karya,revit,desain bim revit,\brevit\b
+345,F. Perumahan & Tata Ruang,rtrw,rencana tata ruang wilayah,\brtrw\b
+346,F. Perumahan & Tata Ruang,rdtr,rencana detail tata ruang,\brdtr\b
+347,F. Perumahan & Tata Ruang,rtbl,rencana tata bangunan dan lingkungan,\brtbl\b
+348,F. Perumahan & Tata Ruang,rpjmd,rencana pembangunan jangka menengah daerah,\brpjmd\b
+349,F. Perumahan & Tata Ruang,rpjpd,rencana pembangunan jangka panjang daerah,\brpjpd\b
+350,F. Perumahan & Tata Ruang,kws,kawasan strategis,\bkws\b
+351,F. Perumahan & Tata Ruang,kpb,kawasan pengembangan baru,\bkpb\b
+352,F. Perumahan & Tata Ruang,ksn,kawasan strategis nasional,\bksn\b
+353,F. Perumahan & Tata Ruang,ksp,kawasan strategis provinsi,\bksp\b
+354,F. Perumahan & Tata Ruang,ksk,kawasan strategis kabupaten,\bksk\b
+355,F. Perumahan & Tata Ruang,kbd,kawasan budidaya,\bkbd\b
+356,F. Perumahan & Tata Ruang,kli,kawasan lindung,\bkli\b
+357,F. Perumahan & Tata Ruang,gpr,garis panjang ruang,\bgpr\b
+358,F. Perumahan & Tata Ruang,gsb,garis sempadan bangunan,\bgsb\b
+359,F. Perumahan & Tata Ruang,gss,garis sempadan sungai,\bgss\b
+360,F. Perumahan & Tata Ruang,gsp,garis sempadan pantai,\bgsp\b
+361,F. Perumahan & Tata Ruang,kdb,koefisien dasar bangunan,\bkdb\b
+362,F. Perumahan & Tata Ruang,klb,koefisien lantai bangunan,\bklb\b
+363,F. Perumahan & Tata Ruang,kdh,koefisien dasar hijau,\bkdh\b
+364,F. Perumahan & Tata Ruang,rtnh,ruang terbuka non hijau,\brtnh\b
+365,F. Perumahan & Tata Ruang,rth,ruang terbuka hijau,\brth\b
+366,F. Perumahan & Tata Ruang,perda,peraturan daerah,\bperda\b
+367,F. Perumahan & Tata Ruang,perkada,peraturan kepala daerah,\bperkada\b
+368,F. Perumahan & Tata Ruang,permen,peraturan menteri,\bpermen\b
+369,F. Perumahan & Tata Ruang,pp,peraturan pemerintah,\bpp\b
+370,F. Perumahan & Tata Ruang,uu,undang undang,\buu\b
+371,F. Perumahan & Tata Ruang,psl,perumahan swadaya,\bpsl\b
+372,F. Perumahan & Tata Ruang,flpp,fasilitas likuiditas pembiayaan perumahan,\bflpp\b
+373,F. Perumahan & Tata Ruang,kpr,kredit pemilikan rumah,\bkpr\b
+374,F. Perumahan & Tata Ruang,subsidi,rumah bersubsidi,\bsubsidi\b
+375,F. Perumahan & Tata Ruang,perumnas,perum perumnas,\bperumnas\b
+376,F. Perumahan & Tata Ruang,bp2bt,balai pelaksanaan penyediaan perumahan,\bbp2bt\b
+377,F. Perumahan & Tata Ruang,snp,standar nasional perumahan,\bsnp\b
+378,G. K3 Konstruksi,k3,keselamatan dan kesehatan kerja,\bk3\b
+379,G. K3 Konstruksi,k3 konstruksi,keselamatan dan kesehatan kerja konstruksi,\bk3 konstruksi\b
+380,G. K3 Konstruksi,k3l,keselamatan kesehatan kerja dan lingkungan,\bk3l\b
+381,G. K3 Konstruksi,hsse,health safety security environment,\bhsse\b
+382,G. K3 Konstruksi,hse,health safety environment,\bhse\b
+383,G. K3 Konstruksi,she,safety health environment,\bshe\b
+384,G. K3 Konstruksi,apd,alat pelindung diri,\bapd\b
+385,G. K3 Konstruksi,personal protective equipment,alat pelindung diri,\bpersonal protective equipment\b
+386,G. K3 Konstruksi,ppe,alat pelindung diri,\bppe\b
+387,G. K3 Konstruksi,helm,helm keselamatan,\bhelm\b
+388,G. K3 Konstruksi,safety helmet,helm keselamatan,\bsafety helmet\b
+389,G. K3 Konstruksi,safety shoes,sepatu keselamatan,\bsafety shoes\b
+390,G. K3 Konstruksi,safety belt,sabuk keselamatan,\bsafety belt\b
+391,G. K3 Konstruksi,harness,sabuk pengaman harness,\bharness\b
+392,G. K3 Konstruksi,scaffolding,perancah,\bscaffolding\b
+393,G. K3 Konstruksi,perancah,perancah,\bperancah\b
+394,G. K3 Konstruksi,formwork,bekisting,\bformwork\b
+395,G. K3 Konstruksi,bekisting,bekisting,\bbekisting\b
+396,G. K3 Konstruksi,shooring,penyangga konstruksi,\bshooring\b
+397,G. K3 Konstruksi,safety officer,petugas keselamatan kerja,\bsafety officer\b
+398,G. K3 Konstruksi,safety inspector,inspektur keselamatan kerja,\bsafety inspector\b
+399,G. K3 Konstruksi,sio,surat izin operator,\bsio\b
+400,G. K3 Konstruksi,sio alat berat,surat izin operator alat berat,\bsio alat berat\b
+401,G. K3 Konstruksi,sikm,sertifikat izin kerja mandiri,\bsikm\b
+402,G. K3 Konstruksi,sika,sertifikat izin kerja ahli,\bsika\b
+403,G. K3 Konstruksi,siujk,surat izin usaha jasa konstruksi,\bsiujk\b
+404,G. K3 Konstruksi,sbk,standar biaya konstruksi,\bsbk\b
+405,G. K3 Konstruksi,smk3,sistem manajemen keselamatan dan kesehatan kerja,\bsmk3\b
+406,G. K3 Konstruksi,rcsk,rencana keselamatan konstruksi,\brcsk\b
+407,G. K3 Konstruksi,rkk,rencana keselamatan konstruksi,\brkk\b
+408,G. K3 Konstruksi,jsa,job safety analysis,\bjsa\b
+409,G. K3 Konstruksi,hazid,hazard identification,\bhazid\b
+410,G. K3 Konstruksi,hazop,hazard operability study,\bhazop\b
+411,G. K3 Konstruksi,hirarc,hazard identification risk assessment risk control,\bhirarc\b
+412,G. K3 Konstruksi,msds,material safety data sheet,\bmsds\b
+413,G. K3 Konstruksi,permit to work,izin kerja,\bpermit to work\b
+414,G. K3 Konstruksi,hot work,pekerjaan panas,\bhot work\b
+415,G. K3 Konstruksi,confined space,ruang terbatas,\bconfined space\b
+416,G. K3 Konstruksi,ruang terbatas,ruang terbatas,\bruang terbatas\b
+417,G. K3 Konstruksi,working at height,kerja di ketinggian,\bworking at height\b
+418,G. K3 Konstruksi,lifting,pengangkatan beban,\blifting\b
+419,G. K3 Konstruksi,rigger,juru ikat angkat,\brigger\b
+420,G. K3 Konstruksi,signalman,pemberi sinyal alat berat,\bsignalman\b
+421,G. K3 Konstruksi,first aider,petugas pertolongan pertama,\bfirst aider\b
+422,G. K3 Konstruksi,warden,petugas evakuasi darurat,\bwarden\b
+423,G. K3 Konstruksi,emergency response,tanggap darurat,\bemergency response\b
+424,G. K3 Konstruksi,insiden,insiden kecelakaan kerja,\binsiden\b
+425,G. K3 Konstruksi,near miss,hampir celaka,\bnear miss\b
+426,G. K3 Konstruksi,kecelakaan kerja,kecelakaan kerja,\bkecelakaan kerja\b
+427,H. Alat Berat & Peralatan,excavator,excavator,\bexcavator\b
+428,H. Alat Berat & Peralatan,back hoe,excavator,\bback hoe\b
+429,H. Alat Berat & Peralatan,bulldozer,bulldozer,\bbulldozer\b
+430,H. Alat Berat & Peralatan,loader,wheel loader,\bloader\b
+431,H. Alat Berat & Peralatan,wheel loader,wheel loader,\bwheel loader\b
+432,H. Alat Berat & Peralatan,motor grader,motor grader,\bmotor grader\b
+433,H. Alat Berat & Peralatan,grader,motor grader,\bgrader\b
+434,H. Alat Berat & Peralatan,vibro roller,alat pemadat vibro,\bvibro roller\b
+435,H. Alat Berat & Peralatan,roller,alat pemadat,\broller\b
+436,H. Alat Berat & Peralatan,pneumatic roller,alat pemadat ban karet,\bpneumatic roller\b
+437,H. Alat Berat & Peralatan,dump truck,truk pengangkut material,\bdump truck\b
+438,H. Alat Berat & Peralatan,dumptruck,truk pengangkut material,\bdumptruck\b
+439,H. Alat Berat & Peralatan,truck mixer,truk molen beton,\btruck mixer\b
+440,H. Alat Berat & Peralatan,concrete pump,pompa beton,\bconcrete pump\b
+441,H. Alat Berat & Peralatan,concrete mixer,molen beton,\bconcrete mixer\b
+442,H. Alat Berat & Peralatan,tower crane,crane menara,\btower crane\b
+443,H. Alat Berat & Peralatan,mobile crane,crane bergerak,\bmobile crane\b
+444,H. Alat Berat & Peralatan,crane,alat angkat crane,\bcrane\b
+445,H. Alat Berat & Peralatan,finisher,asphalt finisher,\bfinisher\b
+446,H. Alat Berat & Peralatan,asphalt finisher,asphalt finisher,\basphalt finisher\b
+447,H. Alat Berat & Peralatan,vibratory compactor,alat pemadat getar,\bvibratory compactor\b
+448,H. Alat Berat & Peralatan,plate compactor,alat pemadat plat,\bplate compactor\b
+449,H. Alat Berat & Peralatan,jack hammer,jackhammer,\bjack hammer\b
+450,H. Alat Berat & Peralatan,jackhammer,jackhammer,\bjackhammer\b
+451,H. Alat Berat & Peralatan,breaker,pemecah beton,\bbreaker\b
+452,H. Alat Berat & Peralatan,welding,pengelasan,\bwelding\b
+453,H. Alat Berat & Peralatan,las,pengelasan,\blas\b
+454,H. Alat Berat & Peralatan,generator,genset,\bgenerator\b
+455,H. Alat Berat & Peralatan,genset,generator set,\bgenset\b
+456,H. Alat Berat & Peralatan,pompa,pompa,\bpompa\b
+457,H. Alat Berat & Peralatan,screw pump,pompa ulir,\bscrew pump\b
+458,H. Alat Berat & Peralatan,submersible pump,pompa celup,\bsubmersible pump\b
+459,H. Alat Berat & Peralatan,pipa bor,pipa pengeboran,\bpipa bor\b
+460,H. Alat Berat & Peralatan,bor,pengeboran,\bbor\b
+461,H. Alat Berat & Peralatan,sondir,cone penetration test,\bsondir\b
+462,H. Alat Berat & Peralatan,cpt,cone penetration test,\bcpt\b
+463,H. Alat Berat & Peralatan,spt,standard penetration test,\bspt\b
+464,H. Alat Berat & Peralatan,uji tanah,penyelidikan tanah,\buji tanah\b
+465,H. Alat Berat & Peralatan,sitac,site acquisition,\bsitac\b
+466,I. Manajemen Proyek & Kontrak,pm,project manager,\bpm\b
+467,I. Manajemen Proyek & Kontrak,project manager,manajer proyek,\bproject manager\b
+468,I. Manajemen Proyek & Kontrak,site manager,manajer lapangan,\bsite manager\b
+469,I. Manajemen Proyek & Kontrak,sm,site manager,\bsm\b
+470,I. Manajemen Proyek & Kontrak,project engineer,insinyur proyek,\bproject engineer\b
+471,I. Manajemen Proyek & Kontrak,pe,project engineer,\bpe\b
+472,I. Manajemen Proyek & Kontrak,field engineer,insinyur lapangan,\bfield engineer\b
+473,I. Manajemen Proyek & Kontrak,fe,field engineer,\bfe\b
+474,I. Manajemen Proyek & Kontrak,qc,quality control,\bqc\b
+475,I. Manajemen Proyek & Kontrak,qce,quality control engineer,\bqce\b
+476,I. Manajemen Proyek & Kontrak,qa,quality assurance,\bqa\b
+477,I. Manajemen Proyek & Kontrak,qaqc,quality assurance quality control,\bqaqc\b
+478,I. Manajemen Proyek & Kontrak,quantity surveyor,quantity surveyor,\bquantity surveyor\b
+479,I. Manajemen Proyek & Kontrak,qs,quantity surveyor,\bqs\b
+480,I. Manajemen Proyek & Kontrak,cost estimator,estimator biaya,\bcost estimator\b
+481,I. Manajemen Proyek & Kontrak,estimator,estimator biaya,\bestimator\b
+482,I. Manajemen Proyek & Kontrak,scheduler,penjadwal proyek,\bscheduler\b
+483,I. Manajemen Proyek & Kontrak,planning engineer,insinyur perencanaan,\bplanning engineer\b
+484,I. Manajemen Proyek & Kontrak,design engineer,insinyur perancangan,\bdesign engineer\b
+485,I. Manajemen Proyek & Kontrak,struktur engineer,insinyur struktur,\bstruktur engineer\b
+486,I. Manajemen Proyek & Kontrak,geotechnic engineer,insinyur geoteknik,\bgeotechnic engineer\b
+487,I. Manajemen Proyek & Kontrak,hydrological engineer,insinyur hidrologi,\bhydrological engineer\b
+488,I. Manajemen Proyek & Kontrak,hidrolik engineer,insinyur hidrolika,\bhidrolik engineer\b
+489,I. Manajemen Proyek & Kontrak,sanitary engineer,insinyur sanitasi,\bsanitary engineer\b
+490,I. Manajemen Proyek & Kontrak,enviro engineer,insinyur lingkungan,\benviro engineer\b
+491,I. Manajemen Proyek & Kontrak,enviromental engineer,insinyur lingkungan,\benviromental engineer\b
+492,I. Manajemen Proyek & Kontrak,amdal,analisis mengenai dampak lingkungan,\bamdal\b
+493,I. Manajemen Proyek & Kontrak,ukl,upaya pengelolaan lingkungan,\bukl\b
+494,I. Manajemen Proyek & Kontrak,upl,upaya pemantauan lingkungan,\bupl\b
+495,I. Manajemen Proyek & Kontrak,pkm,pengembangan kapasitas masyarakat,\bpkm\b
+496,I. Manajemen Proyek & Kontrak,kontrak,kontrak konstruksi,\bkontrak\b
+497,I. Manajemen Proyek & Kontrak,spmk,surat perintah mulai kerja,\bspmk\b
+498,I. Manajemen Proyek & Kontrak,sp2d,surat perintah pencairan dana,\bsp2d\b
+499,I. Manajemen Proyek & Kontrak,spm,surat perintah membayar,\bspm\b
+500,I. Manajemen Proyek & Kontrak,phk,pemutusan hubungan kontrak,\bphk\b
+501,I. Manajemen Proyek & Kontrak,addendum,addendum kontrak,\baddendum\b
+502,I. Manajemen Proyek & Kontrak,cco,contract change order,\bcco\b
+503,I. Manajemen Proyek & Kontrak,vo,variation order,\bvo\b
+504,I. Manajemen Proyek & Kontrak,bast,berita acara serah terima,\bbast\b
+505,I. Manajemen Proyek & Kontrak,basp,berita acara serah pekerjaan,\bbasp\b
+506,I. Manajemen Proyek & Kontrak,ba,berita acara,\bba\b
+507,I. Manajemen Proyek & Kontrak,fhp,fisik harian pekerjaan,\bfhp\b
+508,I. Manajemen Proyek & Kontrak,lap harian,laporan harian,\blap harian\b
+509,I. Manajemen Proyek & Kontrak,lap mingguan,laporan mingguan,\blap mingguan\b
+510,I. Manajemen Proyek & Kontrak,lap bulanan,laporan bulanan,\blap bulanan\b
+511,I. Manajemen Proyek & Kontrak,curva s,kurva s progres,\bcurva s\b
+512,I. Manajemen Proyek & Kontrak,kurva s,kurva s progres,\bkurva s\b
+513,I. Manajemen Proyek & Kontrak,schedule,jadwal pelaksanaan,\bschedule\b
+514,I. Manajemen Proyek & Kontrak,gantt chart,gantt chart jadwal,\bgantt chart\b
+515,I. Manajemen Proyek & Kontrak,network planning,rencana jaringan kerja,\bnetwork planning\b
+516,I. Manajemen Proyek & Kontrak,cpm,critical path method,\bcpm\b
+517,I. Manajemen Proyek & Kontrak,pert,program evaluation review technique,\bpert\b
+518,I. Manajemen Proyek & Kontrak,boq,bill of quantity,\bboq\b
+519,I. Manajemen Proyek & Kontrak,bill of quantity,rincian volume pekerjaan,\bbill of quantity\b
+520,I. Manajemen Proyek & Kontrak,rab,rencana anggaran biaya,\brab\b
+521,I. Manajemen Proyek & Kontrak,rap,rencana anggaran pelaksanaan,\brap\b
+522,I. Manajemen Proyek & Kontrak,hps,harga perkiraan sendiri,\bhps\b
+523,I. Manajemen Proyek & Kontrak,spesifikasi teknis,spesifikasi teknis,\bspesifikasi teknis\b
+524,I. Manajemen Proyek & Kontrak,spek,spesifikasi teknis,\bspek\b
+525,I. Manajemen Proyek & Kontrak,gambar kerja,gambar kerja,\bgambar kerja\b
+526,I. Manajemen Proyek & Kontrak,shop drawing,gambar kerja,\bshop drawing\b
+527,I. Manajemen Proyek & Kontrak,as built drawing,gambar terbangun,\bas built drawing\b
+528,I. Manajemen Proyek & Kontrak,as built,gambar terbangun,\bas built\b
+529,I. Manajemen Proyek & Kontrak,method statement,metode pelaksanaan pekerjaan,\bmethod statement\b
+530,I. Manajemen Proyek & Kontrak,metode kerja,metode pelaksanaan pekerjaan,\bmetode kerja\b
+531,I. Manajemen Proyek & Kontrak,metode pelaks,metode pelaksanaan pekerjaan,\bmetode pelaks\b
+532,I. Manajemen Proyek & Kontrak,sni,standar nasional indonesia,\bsni\b
+533,I. Manajemen Proyek & Kontrak,se,surat edaran,\bse\b
+534,I. Manajemen Proyek & Kontrak,permen pupr,peraturan menteri pekerjaan umum dan perumahan rakyat,\bpermen pupr\b
+535,I. Manajemen Proyek & Kontrak,permen pu,peraturan menteri pekerjaan umum,\bpermen pu\b
+536,J. Profesi & Sertifikasi,skt,sertifikat keterampilan tenaga kerja,\bskt\b
+537,J. Profesi & Sertifikasi,ska,sertifikat keahlian,\bska\b
+538,J. Profesi & Sertifikasi,sktk,sertifikat keterampilan tenaga kerja konstruksi,\bsktk\b
+539,J. Profesi & Sertifikasi,skk,sertifikat kompetensi kerja,\bskk\b
+540,J. Profesi & Sertifikasi,lpjk,lembaga pengembangan jasa konstruksi,\blpjk\b
+541,J. Profesi & Sertifikasi,pusdiklat,pusat pendidikan dan pelatihan,\bpusdiklat\b
+542,J. Profesi & Sertifikasi,bpsdm,badan pengembangan sumber daya manusia,\bbpsdm\b
+543,J. Profesi & Sertifikasi,pii,persatuan insinyur indonesia,\bpii\b
+544,J. Profesi & Sertifikasi,iatpi,ikatan ahli teknik penyehatan dan teknik lingkungan indonesia,\biatpi\b
+545,J. Profesi & Sertifikasi,haki,himpunan ahli konstruksi indonesia,\bhaki\b
+546,J. Profesi & Sertifikasi,isi,ikatan surveyor indonesia,\bisi\b
+547,J. Profesi & Sertifikasi,iai,ikatan arsitek indonesia,\biai\b
+548,J. Profesi & Sertifikasi,hpji,himpunan pengembang jalan indonesia,\bhpji\b
+549,J. Profesi & Sertifikasi,iabi,international association of bridge and structural engineering,\biabi\b
+550,J. Profesi & Sertifikasi,profesional,tenaga ahli profesional,\bprofesional\b
+551,J. Profesi & Sertifikasi,tenaga terampil,tenaga terampil konstruksi,\btenaga terampil\b
+552,J. Profesi & Sertifikasi,tenaga ahli muda,ahli muda,\btenaga ahli muda\b
+553,J. Profesi & Sertifikasi,tenaga ahli madya,ahli madya,\btenaga ahli madya\b
+554,J. Profesi & Sertifikasi,tenaga ahli utama,ahli utama,\btenaga ahli utama\b
+555,J. Profesi & Sertifikasi,ahli muda,ahli muda,\bahli muda\b
+556,J. Profesi & Sertifikasi,ahli madya,ahli madya,\bahli madya\b
+557,J. Profesi & Sertifikasi,ahli utama,ahli utama,\bahli utama\b
+558,J. Profesi & Sertifikasi,terampil,tenaga terampil,\bterampil\b
+559,J. Profesi & Sertifikasi,operator,operator alat,\boperator\b
+560,J. Profesi & Sertifikasi,tukang,tukang,\btukang\b
+561,J. Profesi & Sertifikasi,kepala tukang,kepala tukang,\bkepala tukang\b
+562,J. Profesi & Sertifikasi,pekerja,pekerja konstruksi,\bpekerja\b
+563,J. Profesi & Sertifikasi,buruh,tenaga kerja konstruksi,\bburuh\b
+564,J. Profesi & Sertifikasi,tk konstruksi,tenaga kerja konstruksi,\btk konstruksi\b
+565,J. Profesi & Sertifikasi,mekanik,mekanik alat berat,\bmekanik\b
+566,J. Profesi & Sertifikasi,operator alat berat,operator alat berat,\boperator alat berat\b
+567,J. Profesi & Sertifikasi,juru ukur,juru ukur,\bjuru ukur\b
+568,J. Profesi & Sertifikasi,surveyor,juru ukur,\bsurveyor\b
+569,J. Profesi & Sertifikasi,gps,global positioning system,\bgps\b
+570,J. Profesi & Sertifikasi,total station,total station,\btotal station\b
+571,J. Profesi & Sertifikasi,theodolit,theodolit,\btheodolit\b
+572,J. Profesi & Sertifikasi,waterpass,waterpass,\bwaterpass\b
+573,J. Profesi & Sertifikasi,drafter,juru gambar,\bdrafter\b
+574,J. Profesi & Sertifikasi,juru gambar,juru gambar,\bjuru gambar\b
+575,J. Profesi & Sertifikasi,estimator biaya,estimator biaya konstruksi,\bestimator biaya\b
+576,J. Profesi & Sertifikasi,inspektur,inspektur pekerjaan,\binspektur\b
+577,B. Kelembagaan & Unit Organisasi,djsda,sumber daya air,\bdjsda\b
+578,B. Kelembagaan & Unit Organisasi,djbm,bina marga,\bdjbm\b
+579,B. Kelembagaan & Unit Organisasi,djck,cipta karya,\bdjck\b
+580,B. Kelembagaan & Unit Organisasi,sda,sumber daya air,\bsda\b
+581,B. Kelembagaan & Unit Organisasi,bm,bina marga,\bbm\b
+582,B. Kelembagaan & Unit Organisasi,ck,cipta karya,\bck\b
+583,C. Umum,rehab,rehabilitasi,\brehab\b
+584,C. Umum,pemelih,pemeliharaan,\bpemelih\b
+585,C. Umum,peningk,peningkatan,\bpeningk\b
+586,C. Umum,pemb,pembangunan,\bpemb\b
+587,C. Umum,irig,irigasi,\birig\b
+588,C. Umum,jbt,jembatan,\bjbt\b
+589,E. Cipta Karya,persampahan,persampahan tpa tpst tempat pembuangan akhir,\bpersampahan\b
+590,E. Cipta Karya,sanitasi,sanitasi iplt ipa sanimas perpipaan,\bsanitasi\b
+591,E. Cipta Karya,iplt,instalasi pengolahan lumpur tinja,\biplt\b
+592,E. Cipta Karya,sanimas,sanitasi berbasis masyarakat,\bsanimas\b
+593,E. Cipta Karya,tpa,tempat pembuangan akhir,\btpa\b
+594,E. Cipta Karya,tpst,tempat pengolahan sampah terpadu,\btpst\b
