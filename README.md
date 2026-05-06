@@ -1,6 +1,6 @@
-# 🚀 Fuzzy Matcher & AI Validator (PUPR Edition)
+# 🚀 InfraSync AI: Fuzzy Matcher & AI Validator
 
-Aplikasi web berkinerja tinggi untuk mencocokkan data program/kegiatan infrastruktur Pekerjaan Umum (SDA, Bina Marga, Cipta Karya) menggunakan algoritma **Fuzzy Matching** dan verifikasi tingkat lanjut berbasis **AI (LLM)**.
+**InfraSync AI** adalah aplikasi web berkinerja tinggi untuk mencocokkan data program/kegiatan infrastruktur Pekerjaan Umum (SDA, Bina Marga, Cipta Karya) menggunakan algoritma **Fuzzy Matching** dan verifikasi tingkat lanjut berbasis **AI (LLM)**.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-yellow.svg)
@@ -15,6 +15,21 @@ Aplikasi web berkinerja tinggi untuk mencocokkan data program/kegiatan infrastru
 -   **AI-Powered Verification**: Verifikasi otomatis menggunakan AI (via OpenRouter) untuk menganalisis substansi teknis bidang Pekerjaan Umum (misal: membedakan "Rehab" dan "Pembangunan Baru").
 -   **Atomic Export**: Download hasil matching dalam format Excel yang sudah di-styling rapi.
 -   **Secure Proxy**: Keamanan API Key terjamin dengan sistem proxy melalui backend.
+
+## 🧠 Cara Kerja (How It Works)
+
+Sistem ini menggunakan pendekatan tiga lapis untuk memastikan akurasi data yang maksimal:
+
+1.  **Normalization & Abbreviation Handling**:
+    Sistem membersihkan teks dari karakter khusus dan melakukan ekspansi singkatan teknis otomatis (misal: *Rehab* → *Rehabilitasi*, *DI* → *Daerah Irigasi*) berdasarkan kamus istilah Pekerjaan Umum.
+
+2.  **Hybrid Semantic Retrieval**:
+    Mencari kandidat pasangan menggunakan perpaduan dua algoritma:
+    -   **Fuzzy Matching (60%)**: Menangani kesalahan penulisan (*typo*) dan urutan kata yang berbeda.
+    -   **TF-IDF Cosine Similarity (40%)**: Menganalisis kemiripan konteks berdasarkan frekuensi kata penting.
+    
+3.  **AI Expert Verification (LLM)**:
+    Kandidat terbaik hasil *Fuzzy* akan divalidasi oleh AI yang berperan sebagai *Ahli Perencana Wilayah*. AI mengecek apakah secara substansi teknis dua kegiatan tersebut memang sama (misal: membedakan antara "Pemeliharaan Jalan" dan "Peningkatan Jalan" yang seringkali mirip secara teks tapi berbeda secara anggaran).
 
 ## 🛠️ Tech Stack
 

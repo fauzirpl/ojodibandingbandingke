@@ -4,7 +4,7 @@ import {
   Upload, Play, Download, CheckCircle, FileText,
   AlertCircle, Loader2, Database, Brain, Sparkles,
   Search, CheckCircle2, PlusCircle, FileSpreadsheet,
-  Zap, Settings, ArrowRightLeft, XCircle
+  Zap, Settings, ArrowRightLeft, XCircle, Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -34,11 +34,28 @@ function App() {
   const [isAiComplete, setIsAiComplete] = useState(false);
   const [progress, setProgress] = useState(0);
   const [aiSecret, setAiSecret] = useState({ key: '', model: '' });
+  const [history, setHistory] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     axios.get(`${API_BASE}/config`).then(res => {
-      setAiSecret({ key: res.data.api_key, model: res.data.ai_model });
+      setAiSecret({ key: '', model: res.data.ai_model }); // Key is now backend-only
     });
+
+    // Check for existing session
+    const savedResultId = localStorage.getItem('last_result_id');
+    if (savedResultId) {
+      axios.get(`${API_BASE}/get-result/${savedResultId}`)
+        .then(res => {
+          setResult(res.data);
+          setIsAiComplete(res.data.is_ai_complete);
+          if (res.data.export_cols) setSelectedExportCols(res.data.export_cols);
+          if (res.data.ai_config) setAiConfig(res.data.ai_config);
+        })
+        .catch(() => {
+          localStorage.removeItem('last_result_id');
+        });
+    }
   }, []);
 
   useEffect(() => {
@@ -56,6 +73,37 @@ function App() {
     const next = [...mappings];
     next[index][key] = value;
     setMappings(next);
+  };
+
+  const loadResult = (id) => {
+    setLoadingPhase('search');
+    axios.get(`${API_BASE}/get-result/${id}`)
+      .then(res => {
+        setResult(res.data);
+        setIsAiComplete(res.data.is_ai_complete);
+        if (res.data.export_cols) setSelectedExportCols(res.data.export_cols);
+        if (res.data.ai_config) setAiConfig(res.data.ai_config);
+        if (res.data.mappings && res.data.mappings.length > 0) setMappings(res.data.mappings);
+        localStorage.setItem('last_result_id', id);
+        setShowHistory(false);
+      })
+      .catch(err => setError("Gagal memuat history: " + err.message))
+      .finally(() => setLoadingPhase(null));
+  };
+
+  const fetchHistory = () => {
+    axios.get(`${API_BASE}/list-results`)
+      .then(res => setHistory(res.data))
+      .catch(err => console.error("Gagal ambil history", err));
+  };
+
+  const deleteResult = (e, id) => {
+    e.stopPropagation(); // Biar tidak trigger loadResult
+    if (window.confirm("Hapus history ini secara permanen?")) {
+      axios.delete(`${API_BASE}/delete-result/${id}`)
+        .then(() => fetchHistory())
+        .catch(err => alert("Gagal menghapus: " + err.message));
+    }
   };
 
   useEffect(() => {
@@ -112,33 +160,38 @@ function App() {
     formData.append('session_right', sessionB);
     formData.append('cols_left', JSON.stringify(colsA));
     formData.append('cols_right', JSON.stringify(colsB));
+    formData.append('mappings', JSON.stringify(validMappings));
     formData.append('threshold', threshold);
+    formData.append('use_ai', 'false'); // Always start without AI
+
     if (selectedExportCols.length > 0) {
       formData.append('export_cols', JSON.stringify(selectedExportCols));
     }
-    if (useAi) {
+    if (aiConfig) {
       formData.append('ai_config', JSON.stringify(aiConfig));
     }
 
     try {
-      const formData = new FormData();
-      formData.append('session_left', sessionA);
-      formData.append('session_right', sessionB);
-      formData.append('cols_left', JSON.stringify(colsA));
-      formData.append('cols_right', JSON.stringify(colsB));
-      formData.append('threshold', threshold);
-      formData.append('use_ai', 'false'); // Always start without AI
-
-      if (selectedExportCols.length > 0) {
-        formData.append('export_cols', JSON.stringify(selectedExportCols));
-      }
-      if (aiConfig) {
-        formData.append('ai_config', JSON.stringify(aiConfig));
-      }
 
       const res = await axios.post(`${API_BASE}/match`, formData);
+      // DEBUG: log first row to confirm _right column presence
+      if (res.data.preview?.length > 0) {
+        const firstRow = res.data.preview[0];
+        console.log('DEBUG first row keys:', Object.keys(firstRow));
+        const rightCols = Object.entries(firstRow).filter(([k]) => k.endsWith('_right'));
+        console.log('DEBUG _right values:', rightCols);
+        console.log('DEBUG score:', firstRow.score, '| match_type:', firstRow.match_type);
+      }
       setResult(res.data);
-      setIsAiComplete(false); // Reset agar tombol Verifikasi AI muncul kembali
+      localStorage.setItem('last_result_id', res.data.result_id);
+      // Sync export cols & mappings from backend response
+      if (res.data.export_cols && res.data.export_cols.length > 0) {
+        setSelectedExportCols(res.data.export_cols);
+      }
+      if (res.data.mappings && res.data.mappings.length > 0) {
+        setMappings(res.data.mappings);
+      }
+      setIsAiComplete(false);
     } catch (err) {
       const msg = err.response?.data?.detail || err.message;
       setError("Gagal matching: " + msg);
@@ -300,8 +353,13 @@ Evaluasi setiap pasangan berdasarkan:
         }
       });
 
-      setResult(prev => ({ ...prev, preview: finalPreview, is_ai_complete: true }));
+      setResult(prev => ({ ...prev, preview: finalPreview, is_ai_complete: true, all_candidates: allProcessedData }));
       setIsAiComplete(true);
+
+      // Sync to backend for persistence
+      const syncForm = new FormData();
+      syncForm.append('data', JSON.stringify(allProcessedData));
+      axios.post(`${API_BASE}/sync-result/${result.result_id}`, syncForm);
 
     } catch (err) {
       console.error(err);
@@ -382,8 +440,53 @@ Evaluasi setiap pasangan berdasarkan:
         <div className="sidebar">
           <div style={{ marginBottom: '1rem' }}>
             <h1 style={{ fontSize: '1.2rem', fontWeight: '800', color: '#fff', letterSpacing: '0.1em' }}>
-              MATCH_ENGINE<span className="cursor-blink" />
+              INFRA_SYNC_AI<span className="cursor-blink" />
             </h1>
+          </div>
+
+          {/* Session Manager Panel */}
+          <div className="panel">
+            <div className="panel-header">
+              <Database size={16} />
+              <span className="panel-title">Session Manager</span>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <button 
+                onClick={() => { setShowHistory(true); fetchHistory(); }}
+                className="btn" 
+                title="Buka History"
+                style={{ 
+                  flexDirection: 'column', 
+                  height: '60px', 
+                  fontSize: '0.65rem', 
+                  background: 'rgba(56, 189, 248, 0.05)', 
+                  border: '1px solid rgba(56, 189, 248, 0.2)',
+                  color: 'var(--primary)'
+                }}
+              >
+                <FileText size={18} style={{ marginBottom: '4px' }} />
+                <span>HISTORY</span>
+              </button>
+              <button 
+                onClick={() => { 
+                  setResult(prev => prev ? { ...prev, preview: [], total_rows: 0, isCleared: true } : null);
+                  localStorage.removeItem('last_result_id');
+                }}
+                className="btn" 
+                title="Kosongkan Tabel"
+                style={{ 
+                  flexDirection: 'column', 
+                  height: '60px', 
+                  fontSize: '0.65rem', 
+                  background: 'rgba(239, 68, 68, 0.05)', 
+                  border: '1px solid rgba(239, 68, 68, 0.2)',
+                  color: '#ef4444'
+                }}
+              >
+                <Trash2 size={18} style={{ marginBottom: '4px' }} />
+                <span>CLEAR</span>
+              </button>
+            </div>
           </div>
 
           {/* Upload Panel */}
@@ -434,6 +537,15 @@ Evaluasi setiap pasangan berdasarkan:
                       <option value="">SRC_B</option>
                       {colsB.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
+                    {mappings.length > 1 && (
+                      <button 
+                        onClick={() => removeMapping(idx)}
+                        style={{ background: 'transparent', border: 'none', color: '#ef4444', padding: '4px', cursor: 'pointer' }}
+                        title="Hapus relasi"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
                   </div>
                 ))}
                 <button onClick={addMapping} className="btn" style={{ width: '100%', marginTop: '0.5rem' }}>
@@ -528,18 +640,32 @@ Evaluasi setiap pasangan berdasarkan:
                         </td>
                         <td style={{ fontFamily: 'var(--font-mono)', fontWeight: '700' }}>{row.score}%</td>
                         <td>
-                          {mappings.map(m => m.a).map(k => (
-                            <div key={k} style={{ fontSize: '0.75rem', marginBottom: '2px' }}>
-                              <span style={{ color: '#4b5563' }}>{k}:</span> {row[`${k}_left`]}
-                            </div>
-                          ))}
+                          {Object.entries(row)
+                            .filter(([k]) => k.endsWith('_left'))
+                            .map(([k, v]) => (
+                              <div key={k} style={{ fontSize: '0.75rem', marginBottom: '2px' }}>
+                                <span style={{ color: '#64748b', marginRight: '4px' }}>{k.replace('_left', '')}:</span>
+                                <span>{v}</span>
+                              </div>
+                            ))
+                          }
                         </td>
                         <td>
-                          {mappings.map(m => m.b).map(k => (
-                            <div key={k} style={{ fontSize: '0.75rem', marginBottom: '2px' }}>
-                              <span style={{ color: '#4b5563' }}>{k}:</span> {row[`${k}_right`]}
-                            </div>
-                          ))}
+                          {/* Render all B columns dynamically */}
+                          {Object.entries(row)
+                            .filter(([k]) => k.endsWith('_right') && !['_norm_right', 'score_right', 'match_type_right'].includes(k))
+                            .map(([k, v]) => (
+                              <div key={k} style={{ fontSize: '0.75rem', marginBottom: '4px', borderBottom: '1px solid #1e293b', paddingBottom: '2px' }}>
+                                <span style={{ color: '#94a3b8', marginRight: '4px', fontWeight: '500' }}>
+                                  {k.replace('_right', '')}:
+                                </span> 
+                                <span style={{ color: '#f1f5f9' }}>{v || <span style={{ color: '#475569' }}>-</span>}</span>
+                              </div>
+                            ))
+                          }
+                          {Object.keys(row).filter(k => k.endsWith('_right') && k !== '_norm_right').length === 0 && (
+                            <span style={{ color: '#64748b', fontSize: '0.75rem', fontStyle: 'italic' }}>- No matching data -</span>
+                          )}
                           {isAiComplete && row.ai_reason && (
                             <div style={{ marginTop: '0.5rem', fontSize: '0.7rem', color: 'var(--primary)', opacity: 0.7, fontStyle: 'italic' }}>
                               &gt;&gt; {row.ai_reason}
@@ -590,6 +716,82 @@ Evaluasi setiap pasangan berdasarkan:
                 [ AI ] {batchInfo || "Readying expert analysis layer..."}
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* History Modal */}
+      <AnimatePresence>
+        {showHistory && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="modal-overlay"
+            onClick={() => setShowHistory(false)}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(2, 4, 8, 0.85)', zIndex: 3000, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="panel"
+              onClick={e => e.stopPropagation()}
+              style={{ width: '100%', maxWidth: '600px', maxHeight: '80vh', overflowY: 'auto' }}
+            >
+              <div className="panel-header" style={{ position: 'sticky', top: 0, background: 'var(--panel-bg)', zIndex: 10 }}>
+                <Database size={16} />
+                <span className="panel-title">Matching History</span>
+                <XCircle size={18} onClick={() => setShowHistory(false)} style={{ cursor: 'pointer', marginLeft: 'auto' }} />
+              </div>
+              
+              <div style={{ padding: '1rem' }}>
+                {history.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>Belum ada history tersimpan.</div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    {history.map((item) => (
+                      <div 
+                        key={item.id} 
+                        className="upload-box" 
+                        style={{ 
+                          textAlign: 'left', 
+                          cursor: 'pointer', 
+                          borderColor: result?.result_id === item.id ? 'var(--primary)' : 'var(--border)',
+                          background: result?.result_id === item.id ? 'rgba(56, 189, 248, 0.05)' : 'transparent',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onClick={() => loadResult(item.id)}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.is_ai_complete ? 'var(--primary)' : '#4b5563' }} />
+                            <span style={{ fontWeight: '700', color: '#fff', fontFamily: 'var(--font-mono)' }}>ID: {item.id.substring(0, 8)}</span>
+                          </div>
+                          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{new Date(item.date * 1000).toLocaleString()}</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                            <span style={{ color: 'var(--primary)' }}>{item.match_count}</span> MATCHES_FOUND
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ fontSize: '0.7rem', padding: '2px 8px', borderRadius: '4px', background: 'rgba(255,255,255,0.05)', color: item.is_ai_complete ? 'var(--primary)' : 'var(--text-muted)' }}>
+                              {item.is_ai_complete ? 'AI_VERIFIED' : 'DRAFT_MODE'}
+                            </div>
+                            <button 
+                              onClick={(e) => deleteResult(e, item.id)}
+                              className="btn-icon" 
+                              style={{ color: '#ef4444', padding: '4px', borderRadius: '4px', background: 'rgba(239, 68, 68, 0.1)' }}
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

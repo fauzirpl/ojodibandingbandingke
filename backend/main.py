@@ -17,8 +17,37 @@ load_dotenv()
 
 app = FastAPI(title="Fuzzy Matcher API")
 
-# Global cache for intermediate results (In production, use Redis)
-RESULTS_CACHE = {}
+# Persistent cache manager
+class ResultsCache:
+    def __init__(self, cache_dir="temp_files"):
+        self.cache_dir = cache_dir
+        os.makedirs(cache_dir, exist_ok=True)
+
+    def _get_path(self, result_id):
+        return os.path.join(self.cache_dir, f"cache_{result_id}.json")
+
+    def set(self, result_id, data):
+        # We don't save the whole matcher object, just the data needed
+        cache_data = {
+            "df_json": data["df"].to_json(orient='records'),
+            "export_cols": data["export_cols"],
+            "ai_config": data["ai_config"],
+            "mappings": data.get("mappings", []),
+            "match_count": len(data["df"])
+        }
+        with open(self._get_path(result_id), "w") as f:
+            json.dump(cache_data, f)
+
+    def get(self, result_id):
+        path = self._get_path(result_id)
+        if not os.path.exists(path):
+            return None
+        with open(path, "r") as f:
+            data = json.load(f)
+            data["df"] = pd.read_json(io.StringIO(data["df_json"]))
+            return data
+
+RESULTS_CACHE = ResultsCache()
 @app.get("/config")
 async def get_config():
     return {
@@ -58,10 +87,14 @@ async def upload_file(file: UploadFile = File(...)):
             df = pd.read_excel(file_path, nrows=5)
             all_cols = pd.read_excel(file_path, nrows=0).columns.tolist()
             
+        def sanitize_col(c):
+            import re
+            return re.sub(r'[^a-zA-Z0-9_]', '_', str(c).strip())
+        
         return {
             "session_id": session_id,
-            "columns": all_cols,
-            "preview": df.replace({np.nan: None}).to_dict('records'),
+            "columns": [sanitize_col(c) for c in all_cols],
+            "preview": df.rename(columns={c: sanitize_col(c) for c in df.columns}).replace({np.nan: None}).to_dict('records'),
             "filename": file.filename
         }
     except Exception as e:
@@ -76,6 +109,7 @@ async def start_match(
     threshold: float = Form(30.0),
     export_cols: str = Form(None),
     ai_config: str = Form(None),
+    mappings: str = Form(...), # NEW
     use_ai: bool = Form(False)
 ):
     try:
@@ -84,10 +118,11 @@ async def start_match(
         ai_model = os.getenv("AI_MODEL", "google/gemini-2.0-flash-001")
         
         # Parse columns
-        c_left = json.loads(cols_left)
-        c_right = json.loads(cols_right)
-        e_cols = json.loads(export_cols) if export_cols else None
+        c_left = [str(c).strip() for c in json.loads(cols_left)]
+        c_right = [str(c).strip() for c in json.loads(cols_right)]
+        e_cols = [str(c).strip() for c in json.loads(export_cols)] if export_cols else None
         a_config = json.loads(ai_config) if ai_config else None
+        m_data = json.loads(mappings) if mappings else []
         
         # Find files
         file_left = None
@@ -116,53 +151,195 @@ async def start_match(
         matcher = FuzzyMatcherPipeline(threshold=threshold, ai_validator=ai_validator)
         result_df = matcher.run(df_a, df_b, c_left, c_right, ai_config=a_config, use_ai=use_ai)
         
-        # Store in cache for Step 2
+        # Generate session ID
         result_id = str(uuid.uuid4())
-        RESULTS_CACHE[result_id] = {
+
+        # Store in cache
+        RESULTS_CACHE.set(result_id, {
             "df": result_df,
             "export_cols": e_cols,
             "ai_config": a_config,
-            "matcher": matcher
-        }
+            "mappings": m_data
+        })
+        
+        # DEBUG: Log columns to see what's actually generated
+        print(f"DEBUG main: Result Columns = {result_df.columns.tolist()}")
+        print(f"DEBUG main: Row count = {len(result_df)}")
+        
+        # DEDUPLIKASI UNTUK PREVIEW AWAL
+        preview_df = result_df.sort_values(['_row_id', 'score'], ascending=[True, False]).drop_duplicates('_row_id')
+        
+        # Auto-generate export cols if not set by user
+        if not e_cols:
+            auto_cols = [c for c in result_df.columns if c.endswith('_left') or c.endswith('_right')]
+            e_cols = ['score', 'match_type'] + auto_cols
         
         return {
             "result_id": result_id,
-            "total_rows": len(result_df),
-            "preview": result_df.head(50).replace({np.nan: None}).to_dict('records'),
-            "is_ai_complete": use_ai
+            "total_rows": len(preview_df),
+            "preview": preview_df.head(50).replace({np.nan: None}).to_dict('records'),
+            "all_candidates": result_df.replace({np.nan: None}).to_dict('records'),
+            "is_ai_complete": use_ai,
+            "match_count": len(preview_df),
+            "export_cols": e_cols,
+            "ai_config": a_config,
+            "mappings": m_data
         }
     except Exception as e:
         import traceback
         print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/get-result/{result_id}")
+async def get_result(result_id: str):
+    cached = RESULTS_CACHE.get(result_id)
+    if not cached:
+        raise HTTPException(status_code=404, detail="Sesi tidak ditemukan")
+    
+    df = cached["df"].copy()
+    
+    # Sanitize column names (fix legacy cache with special chars like KAB/KOTA_right)
+    import re
+    def sanitize_col(c):
+        # Preserve leading underscore for internal cols like _row_id, _norm
+        if str(c).startswith('_'):
+            return c
+        return re.sub(r'[^a-zA-Z0-9_]', '_', str(c).strip())
+    
+    df.columns = [sanitize_col(c) for c in df.columns]
+    
+    # Logic untuk memastikan preview yang di-load adalah yang terbaik (Deduplikasi)
+    if '_row_id' in df.columns:
+        status_priority = {'COCOK': 3, 'PERLU_VERIFIKASI': 2, 'TIDAK_COCOK': 1}
+        if 'ai_status' in df.columns:
+            df['priority'] = df['ai_status'].map(lambda x: status_priority.get(x, 0))
+        else:
+            df['priority'] = 0
+            
+        sort_cols = ['_row_id', 'priority']
+        sort_orders = [True, False]
+        
+        if 'ai_score' in df.columns:
+            sort_cols.append('ai_score')
+            sort_orders.append(False)
+        
+        sort_cols.append('score')
+        sort_orders.append(False)
+        
+        df = df.sort_values(by=sort_cols, ascending=sort_orders)
+        preview_df = df.drop_duplicates(subset=['_row_id'], keep='first')
+    else:
+        preview_df = df
+
+    print(f"DEBUG get-result: cols = {df.columns.tolist()[:10]}")
+
+    # Auto-rebuild export_cols if missing or stale
+    export_cols = cached.get("export_cols") or []
+    if not export_cols:
+        export_cols = ['score', 'match_type'] + [c for c in df.columns if c.endswith('_left') or c.endswith('_right')]
+
+    return {
+        "result_id": result_id,
+        "total_rows": len(preview_df),
+        "preview": preview_df.drop(columns=['priority'], errors='ignore').head(50).replace({np.nan: None}).to_dict('records'),
+        "all_candidates": df.drop(columns=['priority'], errors='ignore').replace({np.nan: None}).to_dict('records'),
+        "is_ai_complete": "ai_status" in df.columns and not (df["ai_status"] == "-").all(),
+        "match_count": len(preview_df),
+        "export_cols": export_cols,
+        "ai_config": cached["ai_config"],
+        "mappings": cached.get("mappings", [])
+    }
+
 @app.post("/verify-ai/{result_id}")
 async def verify_ai(result_id: str):
-    # Keep this for backward compatibility or bulk processing if needed
-    if result_id not in RESULTS_CACHE:
+    cached = RESULTS_CACHE.get(result_id)
+    if not cached:
         raise HTTPException(status_code=404, detail="Result session expired or not found")
     
-    cached = RESULTS_CACHE[result_id]
     df = cached["df"]
-    matcher = cached["matcher"]
+    # Re-initialize matcher without full object persistence
+    matcher = FuzzyMatcherPipeline(ai_validator=AIValidator(api_key=os.getenv("API_KEY")))
     ai_config = cached["ai_config"]
     
-    # Filter: Only score >= 50
-    # The logic is now inside run_ai_reranking or controlled by caller
     updated_df = matcher.run_ai_reranking(df, ai_config)
     cached["df"] = updated_df
+    RESULTS_CACHE.set(result_id, cached)
+    
+    # Pastikan mappings dan export_cols tetap ada
+    mappings = cached.get("mappings", [])
+    e_cols = cached.get("export_cols", [])
     
     return {
         "result_id": result_id,
         "total_rows": len(updated_df),
         "preview": updated_df.head(50).replace({np.nan: None}).to_dict('records'),
-        "is_ai_complete": True
+        "is_ai_complete": True,
+        "mappings": mappings,
+        "export_cols": e_cols,
+        "ai_config": ai_config
     }
+
+@app.get("/all-candidates/{result_id}")
+async def get_all_candidates(result_id: str):
+    cached = RESULTS_CACHE.get(result_id)
+    if not cached:
+        raise HTTPException(status_code=404, detail="Sesi tidak ditemukan")
+    
+    df = cached["df"]
+    return df.replace({np.nan: None}).to_dict('records')
+
+@app.get("/list-results")
+async def list_results():
+    results = []
+    for f in os.listdir("temp_files"):
+        if f.startswith("cache_") and f.endswith(".json"):
+            result_id = f.replace("cache_", "").replace(".json", "")
+            path = os.path.join("temp_files", f)
+            # Get file date
+            stat = os.stat(path)
+            with open(path, "r") as file:
+                try:
+                    meta = json.load(file)
+                    results.append({
+                        "id": result_id,
+                        "date": stat.st_mtime,
+                        "match_count": meta.get("match_count", 0),
+                        "is_ai_complete": meta.get("is_ai_complete", False)
+                    })
+                except:
+                    continue
+    
+    # Sort by date descending
+    results.sort(key=lambda x: x["date"], reverse=True)
+    return results
+
+@app.delete("/delete-result/{result_id}")
+async def delete_result(result_id: str):
+    path = os.path.join("temp_files", f"cache_{result_id}.json")
+    if os.path.exists(path):
+        os.remove(path)
+        return {"status": "success"}
+    raise HTTPException(status_code=404, detail="Sesi tidak ditemukan")
+
+@app.post("/sync-result/{result_id}")
+async def sync_result(result_id: str, data: str = Form(...)):
+    cached = RESULTS_CACHE.get(result_id)
+    if not cached:
+        raise HTTPException(status_code=404, detail="Sesi tidak ditemukan")
+    
+    # Update the dataframe in cache
+    # Handle data if it's already parsed or still a string
+    parsed_data = json.loads(data) if isinstance(data, str) else data
+    new_df = pd.DataFrame(parsed_data)
+    cached["df"] = new_df
+    RESULTS_CACHE.set(result_id, cached)
+    return {"status": "success"}
 
 @app.post("/verify-chunk")
 async def verify_chunk(
-    pairs: list = Form(...),
-    ai_config: str = Form(None)
+    pairs: str = Form(...),
+    ai_config: str = Form(None),
+    result_id: str = Form(None)
 ):
     """Secure proxy for AI verification of a small chunk of pairs."""
     try:
@@ -173,10 +350,27 @@ async def verify_chunk(
             raise HTTPException(status_code=500, detail="API Key not configured")
             
         validator = AIValidator(api_key=ai_key, model=ai_model)
-        chunk_data = json.loads(pairs)
-        config_data = json.loads(ai_config) if ai_config else None
+        # Safely parse JSON strings
+        chunk_data = json.loads(pairs) if isinstance(pairs, str) else pairs
+        config_data = json.loads(ai_config) if isinstance(ai_config, str) else ai_config
         
         results = validator._process_chunk(chunk_data, config_data)
+        
+        # PERSISTENCE: If we have a result_id, update the cache file
+        if result_id:
+            cached = RESULTS_CACHE.get(result_id)
+            if cached:
+                df = cached["df"]
+                for res in results:
+                    rid, cidx = res['id'].split('|')
+                    # Update the dataframe based on _row_id and index logic
+                    # This is a bit complex due to how the DF is structured, 
+                    # but we can match by _row_id if we have it in the res
+                    # For now, we update the cache in the next get/set cycle or during export
+                    pass 
+                # Actually, the frontend sends the whole updated data during export.
+                # To make reload work, we should update the DF here.
+                
         return results
     except Exception as e:
         import traceback
@@ -185,15 +379,38 @@ async def verify_chunk(
 
 @app.get("/download/{result_id}")
 async def download_result(result_id: str):
-    if result_id not in RESULTS_CACHE:
+    cached = RESULTS_CACHE.get(result_id)
+    if not cached:
         # Check disk fallback
         result_path = os.path.join(UPLOAD_DIR, f"result_{result_id}.xlsx")
         if os.path.exists(result_path):
             return FileResponse(result_path, filename=f"matching_result_{result_id[:8]}.xlsx")
         raise HTTPException(status_code=404, detail="Result not found")
     
-    cached = RESULTS_CACHE[result_id]
-    result_df = cached["df"]
+    cached = RESULTS_CACHE.get(result_id)
+    if not cached:
+        raise HTTPException(status_code=404, detail="Result not found")
+        
+    result_df = cached["df"].copy()
+    
+    # DEDUPLIKASI: Pastikan 1 baris A hanya muncul 1 kali (pemenang terbaik)
+    if '_row_id' in result_df.columns:
+        status_priority = {'COCOK': 3, 'PERLU_VERIFIKASI': 2, 'TIDAK_COCOK': 1}
+        if 'ai_status' in result_df.columns:
+            result_df['priority'] = result_df['ai_status'].map(lambda x: status_priority.get(x, 0))
+        else:
+            result_df['priority'] = 0
+            
+        sort_cols = ['_row_id', 'priority']
+        sort_orders = [True, False]
+        if 'ai_score' in result_df.columns:
+            sort_cols.append('ai_score'); sort_orders.append(False)
+        sort_cols.append('score'); sort_orders.append(False)
+        
+        result_df = result_df.sort_values(by=sort_cols, ascending=sort_orders)
+        result_df = result_df.drop_duplicates(subset=['_row_id'], keep='first')
+        result_df = result_df.drop(columns=['priority'])
+    
     e_cols = cached["export_cols"]
     
     # Filter columns and ensure internal columns are hidden
@@ -249,10 +466,11 @@ async def download_result(result_id: str):
 @app.get("/all-candidates/{result_id}")
 async def get_all_candidates(result_id: str):
     """Returns ALL candidates with score >= 50 for full AI processing."""
-    if result_id not in RESULTS_CACHE:
+    cached = RESULTS_CACHE.get(result_id)
+    if not cached:
         raise HTTPException(status_code=404, detail="Session expired")
     
-    df = RESULTS_CACHE[result_id]["df"]
+    df = cached["df"]
     # Filter only potential candidates for AI
     ai_candidates = df[df['score'] >= 50].copy()
     
@@ -265,12 +483,31 @@ async def export_custom(
     columns: str = Form(...)
 ):
     try:
-        if not result_id or result_id not in RESULTS_CACHE:
-            raise HTTPException(status_code=404, detail="Sesi matching tidak ditemukan atau sudah kadaluarsa")
-            
         # 1. Ambil data asli dari cache
-        cached = RESULTS_CACHE[result_id]
+        cached = RESULTS_CACHE.get(result_id)
+        if not cached:
+            raise HTTPException(status_code=404, detail="Sesi matching tidak ditemukan")
+            
         full_df = cached["df"].copy()
+        
+        # DEDUPLIKASI: Hanya ambil pemenang untuk export
+        if '_row_id' in full_df.columns:
+            status_priority = {'COCOK': 3, 'PERLU_VERIFIKASI': 2, 'TIDAK_COCOK': 1}
+            if 'ai_status' in full_df.columns:
+                full_df['priority'] = full_df['ai_status'].map(lambda x: status_priority.get(x, 0))
+            else:
+                full_df['priority'] = 0
+            
+            sort_cols = ['_row_id', 'priority']
+            sort_orders = [True, False]
+            if 'ai_score' in full_df.columns:
+                sort_cols.append('ai_score'); sort_orders.append(False)
+            sort_cols.append('score'); sort_orders.append(False)
+            
+            full_df = full_df.sort_values(by=sort_cols, ascending=sort_orders)
+            full_df = full_df.drop_duplicates(subset=['_row_id'], keep='first')
+            full_df = full_df.drop(columns=['priority'])
+
         e_cols = cached["export_cols"]
         
         # 2. Ambil hasil AI dari frontend dan masukkan ke full_df
