@@ -151,6 +151,7 @@ function App() {
     setLoadingPhase('search');
     setResult(null);
     setError(null);
+    setIsAiComplete(false);
 
     const colsA = validMappings.map(m => m.a);
     const colsB = validMappings.map(m => m.b);
@@ -162,7 +163,7 @@ function App() {
     formData.append('cols_right', JSON.stringify(colsB));
     formData.append('mappings', JSON.stringify(validMappings));
     formData.append('threshold', threshold);
-    formData.append('use_ai', 'false'); // Always start without AI
+    formData.append('use_ai', 'false');
 
     if (selectedExportCols.length > 0) {
       formData.append('export_cols', JSON.stringify(selectedExportCols));
@@ -172,36 +173,31 @@ function App() {
     }
 
     try {
-
       const res = await axios.post(`${API_BASE}/match`, formData);
-      // DEBUG: log first row to confirm _right column presence
-      if (res.data.preview?.length > 0) {
-        const firstRow = res.data.preview[0];
-        console.log('DEBUG first row keys:', Object.keys(firstRow));
-        const rightCols = Object.entries(firstRow).filter(([k]) => k.endsWith('_right'));
-        console.log('DEBUG _right values:', rightCols);
-        console.log('DEBUG score:', firstRow.score, '| match_type:', firstRow.match_type);
-      }
-      setResult(res.data);
-      localStorage.setItem('last_result_id', res.data.result_id);
-      // Sync export cols & mappings from backend response
-      if (res.data.export_cols && res.data.export_cols.length > 0) {
-        setSelectedExportCols(res.data.export_cols);
-      }
-      if (res.data.mappings && res.data.mappings.length > 0) {
-        setMappings(res.data.mappings);
-      }
-      setIsAiComplete(false);
+      const matchData = res.data;
+
+      // Set result so it's visible during AI processing
+      setResult(matchData);
+      localStorage.setItem('last_result_id', matchData.result_id);
+      if (matchData.export_cols?.length > 0) setSelectedExportCols(matchData.export_cols);
+      if (matchData.mappings?.length > 0) setMappings(matchData.mappings);
+
+      setLoadingPhase(null);
+
+      // ── Auto-trigger AI verification immediately ──
+      await runAiVerification(null, matchData);
+
     } catch (err) {
       const msg = err.response?.data?.detail || err.message;
       setError("Gagal matching: " + msg);
-    } finally {
       setLoadingPhase(null);
     }
   };
 
-  const runAiVerification = async (targetRowIds = null) => {
-    if (!result?.result_id) return;
+  // resultOverride: pre-loaded match data (when called right after startMatching)
+  const runAiVerification = async (targetRowIds = null, resultOverride = null) => {
+    const activeResult = resultOverride || result;
+    if (!activeResult?.result_id) return;
     setLoadingPhase('ai');
     setProgress(0);
     setError(null);
@@ -210,11 +206,9 @@ function App() {
     if (!targetRowIds) setFailedBatches([]);
 
     try {
-      // 1. Get ALL candidates from the state or backend
-      // For simplicity, we assume result.all_candidates is up to date or we fetch it
-      let candidates = result.all_candidates || [];
+      let candidates = activeResult.all_candidates || [];
       if (candidates.length === 0) {
-        const fullRes = await axios.get(`${API_BASE}/all-candidates/${result.result_id}`);
+        const fullRes = await axios.get(`${API_BASE}/all-candidates/${activeResult.result_id}`);
         candidates = fullRes.data;
         setResult(prev => ({ ...prev, all_candidates: candidates }));
       }
@@ -359,7 +353,7 @@ Evaluasi setiap pasangan berdasarkan:
       // Sync to backend for persistence
       const syncForm = new FormData();
       syncForm.append('data', JSON.stringify(allProcessedData));
-      axios.post(`${API_BASE}/sync-result/${result.result_id}`, syncForm);
+      axios.post(`${API_BASE}/sync-result/${activeResult.result_id}`, syncForm);
 
     } catch (err) {
       console.error(err);
@@ -559,12 +553,13 @@ Evaluasi setiap pasangan berdasarkan:
                 className="btn btn-primary"
                 style={{ width: '100%', marginTop: '1.5rem', padding: '0.8rem' }}
               >
-                {loadingPhase ? "PROCESSING..." : "EXECUTE_PIPELINE"}
+                {loadingPhase === 'search' ? '[ FUZZY MATCHING... ]' 
+                  : loadingPhase === 'ai' ? '[ AI RANKING... ]'
+                  : 'EXECUTE_PIPELINE'}
               </button>
             </div>
           )}
 
-          {/* Export Settings Panel */}
           {result && (
             <div className="panel">
               <div className="panel-header">
@@ -572,32 +567,33 @@ Evaluasi setiap pasangan berdasarkan:
                 <span className="panel-title">Export Config</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                 {!isAiComplete ? (
-                    <div style={{ gridColumn: 'span 2', display: 'grid', gridTemplateColumns: failedBatches.length > 0 ? '1fr 1fr' : '1fr', gap: '0.5rem' }}>
-                      <button onClick={() => runAiVerification()} disabled={loadingPhase === 'ai'} className="btn btn-primary">
-                        <Brain size={16} />
-                        <span>{loadingPhase === 'ai' ? 'SCANNING...' : 'AI_DEEP_SCAN'}</span>
+                {isAiComplete ? (
+                  <button onClick={exportAiResults} className="btn btn-primary" style={{ gridColumn: 'span 2' }}>
+                    FINAL_REPORT
+                  </button>
+                ) : (
+                  <div style={{ gridColumn: 'span 2', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    {loadingPhase === 'ai' && (
+                      <div style={{ fontSize: '0.75rem', color: 'var(--primary)', textAlign: 'center', fontFamily: 'var(--font-mono)' }}>
+                        AI RANKING {progress}% — {batchInfo}
+                      </div>
+                    )}
+                    {failedBatches.length > 0 && (
+                      <button 
+                        onClick={() => runAiVerification(failedBatches)} 
+                        disabled={loadingPhase === 'ai'} 
+                        className="btn" 
+                        style={{ background: '#7c2d12', color: '#fb923c', border: '1px solid #fb923c' }}
+                      >
+                        <AlertCircle size={16} />
+                        <span>RETRY FAILED ({failedBatches.length})</span>
                       </button>
-                      {failedBatches.length > 0 && (
-                        <button 
-                          onClick={() => runAiVerification(failedBatches)} 
-                          disabled={loadingPhase === 'ai'} 
-                          className="btn" 
-                          style={{ background: '#7c2d12', color: '#fb923c', border: '1px solid #fb923c' }}
-                        >
-                          <AlertCircle size={16} />
-                          <span>RETRY ({failedBatches.length})</span>
-                        </button>
-                      )}
-                    </div>
-                 ) : (
-                   <button onClick={exportAiResults} className="btn btn-primary" style={{ gridColumn: 'span 2' }}>
-                      FINAL_REPORT
-                   </button>
-                 )}
-                 <button onClick={downloadInitialResult} className="btn" style={{ gridColumn: 'span 2' }}>
-                    RAW_DUMP
-                 </button>
+                    )}
+                  </div>
+                )}
+                <button onClick={downloadInitialResult} className="btn" style={{ gridColumn: 'span 2' }}>
+                  RAW_DUMP
+                </button>
               </div>
             </div>
           )}
