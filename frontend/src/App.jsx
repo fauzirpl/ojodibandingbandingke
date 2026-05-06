@@ -148,7 +148,7 @@ function App() {
   };
 
   const runAiVerification = async (targetRowIds = null) => {
-    if (!result?.result_id || !aiSecret.key) return;
+    if (!result?.result_id) return;
     setLoadingPhase('ai');
     setProgress(0);
     setError(null);
@@ -236,24 +236,14 @@ Evaluasi setiap pasangan berdasarkan:
 
         while (retries > 0 && !success) {
           try {
-            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-              method: "POST",
-              headers: {
-                "Authorization": `Bearer ${aiSecret.key}`,
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                model: aiSecret.model,
-                messages: [
-                  { role: "system", content: systemPrompt },
-                  { role: "user", content: JSON.stringify({ kandidat_pasangan: batchPairs }) }
-                ],
-                temperature: 0.1
-              })
-            });
+            const formData = new FormData();
+            formData.append('pairs', JSON.stringify(batchPairs));
+            formData.append('ai_config', JSON.stringify(aiConfig));
 
-            if (response.ok) {
-              responseData = await response.json();
+            const response = await axios.post(`${API_BASE}/verify-chunk`, formData);
+            
+            if (response.data) {
+              responseData = response.data; // Backend returns the list of results directly
               success = true;
             } else {
               retries--;
@@ -266,30 +256,13 @@ Evaluasi setiap pasangan berdasarkan:
         }
 
         if (!success) {
-          console.error(`Batch ${batchNum} failed permanently. Saving to failed queue.`);
+          console.error(`Batch ${batchNum} failed permanently.`);
           setFailedBatches(prev => [...new Set([...prev, ...batchRowIds])]);
           processedRows += batchRowIds.length;
           continue;
         }
 
-        const content = responseData.choices[0]?.message?.content || "";
-        const start = content.indexOf('[');
-        const end = content.lastIndexOf(']');
-        
-        if (start === -1 || end === -1) {
-          setFailedBatches(prev => [...new Set([...prev, ...batchRowIds])]);
-          processedRows += batchRowIds.length;
-          continue;
-        }
-
-        let aiResults = [];
-        try {
-          aiResults = JSON.parse(content.substring(start, end + 1));
-        } catch (parseErr) {
-          setFailedBatches(prev => [...new Set([...prev, ...batchRowIds])]);
-          processedRows += batchRowIds.length;
-          continue;
-        }
+        const aiResults = responseData; // Backend directly returns the array
 
         aiResults.forEach(aiRes => {
           const [rid, cidx] = aiRes.id.split('|');

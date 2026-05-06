@@ -22,7 +22,6 @@ RESULTS_CACHE = {}
 @app.get("/config")
 async def get_config():
     return {
-        "api_key": os.getenv("API_KEY"),
         "ai_model": os.getenv("AI_MODEL", "google/gemini-2.0-flash-001")
     }
 
